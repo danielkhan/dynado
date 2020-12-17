@@ -1,0 +1,15 @@
+Resources:
+  ToDoListTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: to-do-list-item
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      # Set the capacity
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1

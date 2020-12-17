@@ -1,0 +1,126 @@
+# This configuration lets you deploy the DynaDo backend on AWS Lambda
+# using the serverless framework (https://www.serverless.com/framework/docs/).
+#
+# To retrieve all needed credentials, please follow the AWS wizard
+# in 'Deploy Dynatrace'.
+
+service: aws-lambda-todolist-service
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  apiGateway:
+    shouldStartNameWithService: true
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:DeleteItem
+      Resource: 'arn:aws:dynamodb:us-east-1:167598770382:table/to-do-list-item'
+
+plugins:
+  - serverless-offline
+
+custom:
+  dynamodb:
+    stages:
+      - dev
+
+resources:
+  # DynamoDB
+  - ${file(resources/dynamodb-table.yml)}
+
+functions:
+  createTodo:
+    handler: handler.createItem
+    layers:
+      # Please fill in as provided by the deployment wizard
+    environment:
+      # Please fill in as provided by the deployment wizard
+    events:
+      - http:
+          method: post
+          path: todolist
+          cors:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - Content-Type
+              - x-dtc
+            allowCredentials: true
+
+  updateTodo:
+    handler: handler.updateItem
+    layers:
+      # Please fill in as provided by the deployment wizard
+    environment:
+      # Please fill in as provided by the deployment wizard
+    events:
+      - http:
+          method: put
+          path: todolist/{id}
+          cors:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - x-dtc
+              - Content-Type
+            allowCredentials: true
+
+  deleteTodo:
+    handler: handler.deleteItem
+    layers:
+      # Please fill in as provided by the deployment wizard
+    environment:
+      # Please fill in as provided by the deployment wizard
+    events:
+      - http:
+          method: delete
+          path: todolist/{id}
+          cors:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - x-dtc
+              - Content-Type
+            allowCredentials: true
+
+  getTodo:
+    handler: handler.getItem
+    layers:
+      # Please fill in as provided by the deployment wizard
+    environment:
+      # Please fill in as provided by the deployment wizard
+    events:
+      - http:
+          method: get
+          path: todolist/{id}
+          cors:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - x-dtc
+              - Content-Type
+            allowCredentials: true
+
+  getTodos:
+    handler: handler.getItems
+    layers:
+      # Please fill in as provided by the deployment wizard
+    environment:
+      # Please fill in as provided by the deployment wizard
+    events:
+      - http:
+          method: get
+          path: todolist
+          cors:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - x-dtc
+              - Content-Type
+            allowCredentials: true
