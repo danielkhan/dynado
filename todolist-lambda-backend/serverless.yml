@@ -25,7 +25,7 @@ provider:
         - dynamodb:GetItem
         - dynamodb:PutItem
         - dynamodb:DeleteItem
-      Resource: 'arn:aws:dynamodb:us-east-1:167598770382:table/to-do-list-item'
+      Resource: 'arn:aws:dynamodb:us-east-1:<AWS_ACCOUNT_ID>:table/to-do-list-item'
 
 plugins:
   - serverless-offline

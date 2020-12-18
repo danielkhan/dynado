@@ -14,7 +14,8 @@ Prerequisites: node.js and npm needs to be installed.
 1. Install serverless: `npm install -g serverless`
 2. Change into `todolist-lambda-backend`
 3. run `npm install`
-4. run `serverless deploy`
+4. In `serverless.yml` replace `<AWS_ACCOUNT_ID>` with [your AWS account Id](https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html)
+5. run `serverless deploy`
 
 Keep the URLs of the created Lambda functions - you will need them to set up the frontend.
 
